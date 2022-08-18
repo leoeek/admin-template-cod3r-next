@@ -1,3 +1,5 @@
+import Head from 'next/head'
+import Script from 'next/script'
 import Image from 'next/image'
 import router from 'next/router'
 
@@ -7,9 +9,19 @@ import useAuth from '../../data/hook/useAuth'
 export default function ForcarAutenticacao(props) {
     const { carregando, usuario } = useAuth()
 
-    function renderizarConteudo() {
+    function renderizarConteudo() {        
         return (
             <>
+                <Head>
+                    <Script dangerouslySetInnerHTML={{
+                        __html: `
+                            if (!document.cookie?.includes('admin-tempalte-cod3r-auth')) {
+                                window.location.href = '/autenticacao'
+                            }
+                        `
+                    }}
+                    />
+                </Head>
                 {props.children}
             </>
         )

@@ -5,7 +5,7 @@ import { IconeAtencao } from "../components/icons";
 import useAuth from "../data/hook/useAuth";
 
 export default function Autenticacao() {
-    const { usuario, loginGoogle } = useAuth()
+    const { cadastrar, login, loginGoogle } = useAuth()
 
     const [modo, setModo] = useState<'login' | 'cadastro'>('login')
     const [email, setEmail] = useState('')
@@ -17,13 +17,19 @@ export default function Autenticacao() {
         setTimeout(() => setErro(null), tempoEmSegundos * 1000)
     }
 
-    function submeter() {
-        if (modo === 'login') {
-            console.log('login')
-            exibirErro('Ocorreu um erro no login')
+    async function submeter() {
+        try {
+            console.log(email, senha)
+            if (modo === 'login') {
+                await login(email, senha)
+            }
+            else {
+                await cadastrar(email, senha)
+            }
         }
-        else {
-            console.log('cadastrar')
+        catch(e) {
+            console.log('veio aqui')
+            exibirErro(e?.message ?? 'Erro inesperado!')
         }
     }
 
